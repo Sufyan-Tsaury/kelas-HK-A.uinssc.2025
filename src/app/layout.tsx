@@ -76,7 +76,7 @@ const jsonLd = {
   name: 'Portal Kelas HK A 2025',
   alternateName: [
     'Kelas HK A 2025',
-    'Kelas HK A 2025 UIN Siber Cirebon',
+    'Kelas HK A 2025 UIN Siber Syekh Nurjati Cirebon',
     'Hukum Keluarga A 2025',
     'Portal Akademik HK A 2025',
   ],
