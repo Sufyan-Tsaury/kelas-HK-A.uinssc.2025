@@ -523,7 +523,7 @@ export default function AdminDashboard() {
         )}
 
         <aside
-          className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-stone-200/90 flex flex-col justify-between transition-transform duration-200 ease-in-out md:translate-x-0 md:static md:h-screen md:sticky md:top-0 shrink-0 select-none shadow-[2px_0_12px_rgba(0,0,0,0.02)] ${
+          className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-stone-200/90 flex flex-col justify-between transition-transform duration-200 ease-in-out md:translate-x-0 md:static md:h-screen md:sticky md:top-0 shrink-0 select-none shadow-[2px_0_12px_rgba(0,0,0,0.02)] print:hidden ${
             mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
         >

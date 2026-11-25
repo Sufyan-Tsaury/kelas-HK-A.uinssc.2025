@@ -113,7 +113,7 @@ export default function AttendanceSheetPrint({
     >
       <div
         id="printable-attendance-sheet"
-        className="bg-white text-stone-900 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden border border-stone-200 my-6 print:m-0 print:p-0 print:w-full print:max-w-none print:shadow-none print:border-none print:rounded-none print:overflow-visible"
+        className="bg-white text-stone-900 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden border border-stone-200 my-6 print:m-0 print:p-0 print:w-[190mm] print:max-w-[190mm] print:shadow-none print:border-none print:rounded-none print:overflow-visible"
       >
         {/* Action Header - Hidden when printing */}
         <div className="no-print bg-stone-100 p-4 border-b border-stone-200 flex items-center justify-between">

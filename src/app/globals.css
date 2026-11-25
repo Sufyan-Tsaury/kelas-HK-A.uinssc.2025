@@ -78,11 +78,11 @@ h1, h2, h3, h4, h5, h6 {
   background-size: 24px 24px;
 }
 
-/* Print Styling for Official Attendance Sheets */
+/* Print Styling for Official Attendance Sheets (Strict A4 Portrait) */
 @media print {
   @page {
-    size: A4 portrait;
-    margin: 0mm !important;
+    size: A4 portrait !important;
+    margin: 8mm 10mm 8mm 10mm !important;
   }
 
   html, body {
@@ -99,7 +99,9 @@ h1, h2, h3, h4, h5, h6 {
 
   .no-print,
   nav,
-  footer {
+  header,
+  footer,
+  aside {
     display: none !important;
   }
 
@@ -114,6 +116,7 @@ h1, h2, h3, h4, h5, h6 {
     position: static !important;
     display: block !important;
     width: 100% !important;
+    max-width: 100% !important;
     height: auto !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -127,10 +130,11 @@ h1, h2, h3, h4, h5, h6 {
   #printable-attendance-sheet {
     position: static !important;
     display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    width: 190mm !important;
+    max-width: 190mm !important;
+    min-width: 0 !important;
     margin: 0 auto !important;
-    padding: 10mm 14mm 14mm 14mm !important;
+    padding: 0 !important;
     background: #ffffff !important;
     box-shadow: none !important;
     border: none !important;
@@ -142,6 +146,7 @@ h1, h2, h3, h4, h5, h6 {
   table {
     border-collapse: collapse !important;
     width: 100% !important;
+    max-width: 100% !important;
     page-break-inside: auto !important;
   }
 
@@ -156,7 +161,7 @@ h1, h2, h3, h4, h5, h6 {
 
   th, td {
     border: 1px solid #292524 !important;
-    padding: 4px 6px !important;
+    padding: 3px 5px !important;
     font-size: 8.5pt !important;
     line-height: 1.25 !important;
     color: #000000 !important;
@@ -173,12 +178,7 @@ h1, h2, h3, h4, h5, h6 {
   .signature-block {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
-    margin-top: 1.5rem !important;
-  }
-
-  @page {
-    size: A4 portrait;
-    margin: 1cm 1.2cm 1cm 1.2cm;
+    margin-top: 1.2rem !important;
   }
 }
 

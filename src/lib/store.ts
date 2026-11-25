@@ -94,7 +94,7 @@ function getInitialState(): AppState {
     records: INITIAL_RECORDS,
     materials: INITIAL_MATERIALS,
     announcements: INITIAL_ANNOUNCEMENTS,
-    adminPin: 'adminhk2025',
+    adminPin: 'piantsa16',
     activeSemester: 3,
     libraryItems: INITIAL_LIBRARY_ITEMS,
     classDriveUrl: 'https://drive.google.com/drive/folders/1Ps47X2kULhZtao3iyxKSqpHVGRn7fTT2',
@@ -177,7 +177,7 @@ class Store {
           records: Array.isArray(parsed.records) ? parsed.records : INITIAL_RECORDS,
           materials: Array.isArray(parsed.materials) ? parsed.materials : INITIAL_MATERIALS,
           announcements: Array.isArray(parsed.announcements) ? parsed.announcements : INITIAL_ANNOUNCEMENTS,
-          adminPin: parsed.adminPin || 'adminhk2025',
+          adminPin: parsed.adminPin || 'piantsa16',
           libraryItems: Array.isArray(parsed.libraryItems) && parsed.libraryItems.length > 0 ? parsed.libraryItems : INITIAL_LIBRARY_ITEMS,
           classDriveUrl:
             parsed.classDriveUrl && !parsed.classDriveUrl.includes('1w7R9K63YJpP_CLASS_HK_A_2025')
@@ -353,8 +353,13 @@ class Store {
           this.state.classDriveUrl = driveMeta.content;
         }
 
+        const adminPinMeta = remoteAnn.find((a: any) => a.id === 'SYS_ADMIN_PIN' || a.category === 'SISTEM_ADMIN_PIN');
+        if (adminPinMeta && adminPinMeta.content && adminPinMeta.content.trim()) {
+          this.state.adminPin = adminPinMeta.content.trim();
+        }
+
         this.state.announcements = remoteAnn
-          .filter((a: any) => !['SYS_ACTIVE_SEMESTER', 'SYS_CLASS_DRIVE_URL'].includes(a.id) && !['SISTEM_SEMESTER', 'SISTEM_DRIVE_URL'].includes(a.category))
+          .filter((a: any) => !['SYS_ACTIVE_SEMESTER', 'SYS_CLASS_DRIVE_URL', 'SYS_ADMIN_PIN'].includes(a.id) && !['SISTEM_SEMESTER', 'SISTEM_DRIVE_URL', 'SISTEM_ADMIN_PIN'].includes(a.category))
           .map((a: any) => ({
             id: a.id,
             title: a.title,
@@ -1210,9 +1215,26 @@ class Store {
     return this.state.adminPin;
   }
 
-  public setAdminPin(pin: string) {
-    this.state.adminPin = pin;
+  public async setAdminPin(pin: string) {
+    const cleanPin = pin.trim();
+    this.state.adminPin = cleanPin;
     this.save();
+
+    if (isSupabaseConfigured()) {
+      try {
+        await supabase.from('announcements').upsert({
+          id: 'SYS_ADMIN_PIN',
+          title: 'Sistem Master Admin PIN',
+          content: cleanPin,
+          category: 'SISTEM_ADMIN_PIN',
+          author: 'Sistem',
+          date: new Date().toISOString().split('T')[0],
+          pinned: false,
+        });
+      } catch (e) {
+        console.error('Failed to sync admin pin to Supabase:', e);
+      }
+    }
   }
 
   // --- Reset & Backup ---
