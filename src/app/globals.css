@@ -78,11 +78,23 @@ h1, h2, h3, h4, h5, h6 {
   background-size: 24px 24px;
 }
 
+/* Print Page Descriptor (Root Level, W3C Compliant without !important) */
+@page {
+  size: A4 portrait;
+  margin: 8mm 10mm 8mm 10mm;
+}
+
 /* Print Styling for Official Attendance Sheets (Strict A4 Portrait) */
 @media print {
   @page {
-    size: A4 portrait !important;
-    margin: 8mm 10mm 8mm 10mm !important;
+    size: A4 portrait;
+    margin: 8mm 10mm 8mm 10mm;
+  }
+
+  /* When printing the attendance sheet modal, suppress all other body elements */
+  body.print-sheet-active > *:not(#printable-attendance-sheet-wrapper) {
+    display: none !important;
+    visibility: hidden !important;
   }
 
   html, body {

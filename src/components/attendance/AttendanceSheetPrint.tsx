@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Course, AttendanceSession, AttendanceRecord, Student } from '@/lib/types';
 import { Printer, Download, X, CheckCircle2 } from 'lucide-react';
 import { exportSingleSessionCsv } from '@/lib/exportUtils';
@@ -20,6 +21,16 @@ export default function AttendanceSheetPrint({
   records,
   onClose,
 }: AttendanceSheetPrintProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    document.body.classList.add('print-sheet-active');
+    return () => {
+      document.body.classList.remove('print-sheet-active');
+    };
+  }, []);
+
   // CRITICAL: Filter only records for THIS specific session!
   const sessionRecords = records.filter(
     (r) => !r.sessionId || r.sessionId === session.id
@@ -106,11 +117,34 @@ export default function AttendanceSheetPrint({
     }
   })();
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div
       id="printable-attendance-sheet-wrapper"
       className="fixed inset-0 z-50 bg-stone-900/75 backdrop-blur-sm overflow-y-auto p-4 sm:p-6 flex justify-center items-start print:static print:p-0 print:m-0 print:bg-white print:overflow-visible print:w-full print:h-auto print:block"
     >
+      {/* Strict inline print stylesheet to guarantee desktop portrait orientation */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            @page {
+              size: A4 portrait;
+              margin: 8mm 10mm 8mm 10mm;
+            }
+            @media print {
+              @page {
+                size: A4 portrait;
+                margin: 8mm 10mm 8mm 10mm;
+              }
+              body.print-sheet-active > *:not(#printable-attendance-sheet-wrapper) {
+                display: none !important;
+                visibility: hidden !important;
+              }
+            }
+          `,
+        }}
+      />
       <div
         id="printable-attendance-sheet"
         className="bg-white text-stone-900 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden border border-stone-200 my-6 print:m-0 print:p-0 print:w-[190mm] print:max-w-[190mm] print:shadow-none print:border-none print:rounded-none print:overflow-visible"
@@ -289,6 +323,7 @@ export default function AttendanceSheetPrint({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
