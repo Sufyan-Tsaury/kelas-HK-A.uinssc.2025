@@ -37,16 +37,16 @@ export default function Footer() {
   }
 
   return (
-    <footer className="w-full bg-[#140b05] text-stone-300 border-t border-[#8c4e24]/25 no-print mt-auto relative overflow-hidden">
+    <footer className="w-full bg-[#241800] text-[#E6DAC1] border-t border-[#4A3200] no-print mt-auto relative overflow-hidden pb-20 md:pb-0">
       {/* Subtle ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-32 bg-radial from-[#8c4e24]/15 via-transparent to-transparent pointer-events-none blur-2xl" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-32 bg-radial from-[#785406]/25 via-transparent to-transparent pointer-events-none blur-2xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
         {/* Top Section: Brand & Quick Action Badges */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-10 border-b border-white/[0.07]">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-10 border-b border-white/[0.08]">
           {/* Identity */}
           <div className="flex items-center space-x-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-stone-900/90 border border-amber-500/30 p-1 shadow-lg shadow-amber-950/40 flex-shrink-0 flex items-center justify-center ring-1 ring-white/10">
+            <div className="w-12 h-12 rounded-2xl bg-[#4A3200] border border-[#C8962E]/45 p-1 shadow-lg flex-shrink-0 flex items-center justify-center">
               <img
                 src="/logo.png"
                 alt="Logo HK A 2025"
@@ -58,11 +58,11 @@ export default function Footer() {
                 <h3 className="text-base font-bold text-white tracking-tight">
                   HK A 2025
                 </h3>
-                <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/25">
+                <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#4A3200] text-[#FCE4A6] border border-[#C8962E]/35">
                   Syariah
                 </span>
               </div>
-              <p className="text-xs text-stone-400 font-medium">
+              <p className="text-xs text-[#C5B492] font-medium">
                 Fakultas Syariah • UIN Siber Syekh Nurjati Cirebon
               </p>
             </div>
@@ -74,15 +74,15 @@ export default function Footer() {
               href={`https://wa.me/${HELPDESK_PHONE_WA}?text=Halo%20Admin%20HK%20A%202025,%20saya%20ingin%20bertanya:`}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-white/[0.04] hover:bg-amber-500/10 hover:border-amber-500/30 border border-white/10 text-xs text-stone-200 hover:text-amber-200 transition-all group"
+              className="inline-flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-[#382600] hover:bg-[#4A3200] border border-[#785406]/60 text-xs text-[#F6EFE0] hover:text-white transition-all group"
             >
-              <Phone className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
+              <Phone className="w-3.5 h-3.5 text-[#FCE4A6] group-hover:scale-110 transition-transform" />
               <span>Helpdesk: <strong className="font-mono text-white font-medium">{HELPDESK_PHONE_DISPLAY}</strong></span>
-              <ArrowUpRight className="w-3 h-3 text-stone-500 group-hover:text-amber-300 transition-colors" />
+              <ArrowUpRight className="w-3 h-3 text-[#C5B492] group-hover:text-[#FCE4A6] transition-colors" />
             </a>
 
-            <div className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/[0.06] text-xs text-stone-400">
-              <MapPin className="w-3.5 h-3.5 text-stone-500" />
+            <div className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs text-[#C5B492]">
+              <MapPin className="w-3.5 h-3.5 text-[#C8962E]" />
               <span>Cirebon, Jawa Barat</span>
             </div>
           </div>
@@ -92,10 +92,10 @@ export default function Footer() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 py-10">
           {/* Col 1: Layanan Utama */}
           <div>
-            <h4 className="text-[11px] font-bold text-amber-300/90 uppercase tracking-widest mb-3.5">
+            <h4 className="text-[11px] font-bold text-[#FCE4A6] uppercase tracking-widest mb-3.5">
               Layanan Utama
             </h4>
-            <ul className="space-y-2.5 text-xs text-stone-400">
+            <ul className="space-y-2.5 text-xs text-[#C5B492]">
               <li>
                 <Link href="/" className="hover:text-white transition-colors flex items-center group">
                   <span className="group-hover:translate-x-0.5 transition-transform">Beranda Utama</span>
@@ -130,10 +130,10 @@ export default function Footer() {
 
           {/* Col 2: Portal Akses */}
           <div>
-            <h4 className="text-[11px] font-bold text-amber-300/90 uppercase tracking-widest mb-3.5">
+            <h4 className="text-[11px] font-bold text-[#FCE4A6] uppercase tracking-widest mb-3.5">
               Portal Akses
             </h4>
-            <ul className="space-y-2.5 text-xs text-stone-400">
+            <ul className="space-y-2.5 text-xs text-[#C5B492]">
               <li>
                 <Link href="/mahasiswa" className="hover:text-white transition-colors flex items-center group">
                   <span className="group-hover:translate-x-0.5 transition-transform">Portal Presensi Mahasiswa</span>
@@ -159,24 +159,24 @@ export default function Footer() {
 
           {/* Col 3: Standar Sistem */}
           <div>
-            <h4 className="text-[11px] font-bold text-amber-300/90 uppercase tracking-widest mb-3.5">
+            <h4 className="text-[11px] font-bold text-[#FCE4A6] uppercase tracking-widest mb-3.5">
               Standar Sistem
             </h4>
-            <ul className="space-y-2.5 text-xs text-stone-400">
+            <ul className="space-y-2.5 text-xs text-[#C5B492]">
               <li className="flex items-center space-x-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-amber-400/80 flex-shrink-0" />
+                <ShieldCheck className="w-3.5 h-3.5 text-[#FCE4A6] flex-shrink-0" />
                 <span>Whitelist NIM Mahasiswa</span>
               </li>
               <li className="flex items-center space-x-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-amber-400/80 flex-shrink-0" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#FCE4A6] flex-shrink-0" />
                 <span>PIN Mandiri 6 Digit</span>
               </li>
               <li className="flex items-center space-x-2">
-                <Users className="w-3.5 h-3.5 text-amber-400/80 flex-shrink-0" />
+                <Users className="w-3.5 h-3.5 text-[#FCE4A6] flex-shrink-0" />
                 <span>Otoritas Sesi PJ Kelas</span>
               </li>
               <li className="flex items-center space-x-2">
-                <BookOpen className="w-3.5 h-3.5 text-amber-400/80 flex-shrink-0" />
+                <BookOpen className="w-3.5 h-3.5 text-[#FCE4A6] flex-shrink-0" />
                 <span>Repositori Berkas Kuliah</span>
               </li>
             </ul>
@@ -184,13 +184,13 @@ export default function Footer() {
 
           {/* Col 4: Lembaga / Afiliasi */}
           <div className="col-span-2 sm:col-span-3 lg:col-span-1">
-            <h4 className="text-[11px] font-bold text-amber-300/90 uppercase tracking-widest mb-3.5">
+            <h4 className="text-[11px] font-bold text-[#FCE4A6] uppercase tracking-widest mb-3.5">
               Institusi
             </h4>
-            <p className="text-xs text-stone-400 leading-relaxed">
+            <p className="text-xs text-[#C5B492] leading-relaxed">
               Program Studi Hukum Keluarga, Fakultas Syariah, UIN Siber Syekh Nurjati Cirebon.
             </p>
-            <div className="mt-3 inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/[0.06] text-[11px] text-stone-400">
+            <div className="mt-3 inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-[#382600] border border-[#785406]/50 text-[11px] text-[#FCE4A6]">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span>Cyber Islamic University</span>
             </div>
@@ -198,7 +198,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar: Clean Copyright & Status */}
-        <div className="pt-6 border-t border-white/[0.07] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-500">
+        <div className="pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#9E8B64]">
           <p>© {currentYear} Hukum Keluarga A 2025. All rights reserved.</p>
           <div className="flex items-center space-x-2 text-[11px] text-stone-400">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />

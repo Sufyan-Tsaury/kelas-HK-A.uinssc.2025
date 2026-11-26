@@ -3,16 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --primary-uin: #9d5f2f;
-  --primary-hover: #864d23;
-  --primary-dark: #5c3313;
-  --primary-light: #f7f1eb;
-  --primary-accent: #d97706;
+  --primary-uin: #4A3200;
+  --primary-hover: #3B2800;
+  --primary-dark: #291B00;
+  --primary-soft: #634300;
+  --primary-light: #FAF7F2;
+  --cream-surface: #F6EFE0;
+  --cream-edge: #D7C49E;
+  --primary-accent: #C8962E;
 }
 
 body {
-  color: #1c1917;
-  background-color: #ffffff;
+  color: #241904;
+  background-color: #FAF7F2;
   font-family: var(--font-jakarta), "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -24,10 +27,137 @@ body {
   -webkit-touch-callout: none;
 }
 
-button:focus, button:active, button:focus-visible,
-a:focus, a:active, a:focus-visible {
-  outline: none !important;
-  -webkit-tap-highlight-color: transparent !important;
+:where(a:any-link, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #C8962E !important;
+  outline-offset: 2px !important;
+}
+
+/* Native <dialog> modal scroll containment & backdrop */
+dialog:modal {
+  overscroll-behavior: contain;
+  margin: auto;
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: calc(100vw - 1.5rem);
+  max-height: calc(100dvh - 1.5rem);
+}
+
+dialog::backdrop {
+  background: rgba(25, 17, 2, 0.72);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+/* Tactile 3D Clay / Bevel Buttons (Inspired by Ref 4 & #4A3200 Palette) */
+.btn-3d-cream {
+  background: linear-gradient(180deg, #FFFDF8 0%, #F4E6CA 100%);
+  color: #4A3200;
+  border: 1px solid #E4D2AC;
+  box-shadow:
+    inset 0 2px 2px rgba(255, 255, 255, 0.92),
+    0 4px 0 #CDB88D,
+    0 8px 16px -4px rgba(74, 50, 0, 0.22);
+  transition: transform 0.14s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.14s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.14s ease;
+}
+
+.btn-3d-cream:hover {
+  filter: brightness(1.02);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 2px 2px rgba(255, 255, 255, 0.96),
+    0 5px 0 #CDB88D,
+    0 11px 20px -4px rgba(74, 50, 0, 0.26);
+}
+
+.btn-3d-cream:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 3px rgba(74, 50, 0, 0.14),
+    0 1px 0 #CDB88D,
+    0 2px 6px -1px rgba(74, 50, 0, 0.18);
+}
+
+.btn-3d-bronze {
+  background: linear-gradient(180deg, #634400 0%, #4A3200 100%);
+  color: #FFFDF8;
+  border: 1px solid #785406;
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 234, 184, 0.3),
+    0 4px 0 #261900,
+    0 8px 18px -4px rgba(38, 25, 0, 0.36);
+  transition: transform 0.14s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.14s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.14s ease;
+}
+
+.btn-3d-bronze:hover {
+  background: linear-gradient(180deg, #704D00 0%, #523800 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 234, 184, 0.36),
+    0 5px 0 #261900,
+    0 11px 22px -4px rgba(38, 25, 0, 0.42);
+}
+
+.btn-3d-bronze:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.35),
+    0 1px 0 #261900,
+    0 2px 6px -2px rgba(38, 25, 0, 0.28);
+}
+
+.tile-3d-cream {
+  background: linear-gradient(180deg, #FBF6EC 0%, #F1E5CC 100%);
+  border: 1px solid #E6D6B5;
+  box-shadow:
+    inset 0 2px 2px rgba(255, 255, 255, 0.88),
+    0 4px 0 #DAC69E,
+    0 8px 16px -6px rgba(74, 50, 0, 0.14);
+  transition: transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.16s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.16s ease;
+}
+
+.tile-3d-cream:hover {
+  transform: translateY(-2px);
+  border-color: #C8A96E;
+  box-shadow:
+    inset 0 2px 2px rgba(255, 255, 255, 0.95),
+    0 6px 0 #D2BC90,
+    0 12px 22px -6px rgba(74, 50, 0, 0.2);
+}
+
+.tile-3d-cream:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 3px rgba(74, 50, 0, 0.1),
+    0 1px 0 #DAC69E,
+    0 2px 6px -2px rgba(74, 50, 0, 0.14);
+}
+
+.tile-3d-bronze {
+  background: linear-gradient(180deg, #604200 0%, #4A3200 100%);
+  border: 1px solid #78550A;
+  box-shadow:
+    inset 0 2px 2px rgba(255, 234, 184, 0.24),
+    0 4px 0 #261900,
+    0 10px 20px -5px rgba(74, 50, 0, 0.38);
+  transition: transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.16s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.tile-3d-bronze:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 2px 2px rgba(255, 234, 184, 0.3),
+    0 6px 0 #261900,
+    0 14px 26px -6px rgba(74, 50, 0, 0.44);
+}
+
+.tile-3d-bronze:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.32),
+    0 1px 0 #261900,
+    0 2px 8px -2px rgba(38, 25, 0, 0.28);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -54,27 +184,27 @@ h1, h2, h3, h4, h5, h6 {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1eae2;
+  background: #F4EFE4;
 }
 ::-webkit-scrollbar-thumb {
-  background: #c89a7c;
+  background: #C5B084;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9d5f2f;
+  background: #4A3200;
 }
 
 /* Islamic Geometric Pattern Accent (CSS subtle background) */
 .pattern-bg {
-  background-color: #9d5f2f;
-  background-image: radial-gradient(#b87744 1px, transparent 1px), radial-gradient(#b87744 1px, #9d5f2f 1px);
+  background-color: #4A3200;
+  background-image: radial-gradient(#6A4908 1px, transparent 1px), radial-gradient(#6A4908 1px, #4A3200 1px);
   background-size: 40px 40px;
   background-position: 0 0, 20px 20px;
 }
 
 .pattern-light {
-  background-color: #fcf9f6;
-  background-image: radial-gradient(#ebdcd0 1.2px, transparent 1.2px);
+  background-color: #FAF7F2;
+  background-image: radial-gradient(#E6DAC1 1.2px, transparent 1.2px);
   background-size: 24px 24px;
 }
 

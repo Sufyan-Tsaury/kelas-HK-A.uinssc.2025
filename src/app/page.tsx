@@ -6,41 +6,29 @@ import {
   BookOpen,
   Calendar,
   CalendarDays,
-  Clock,
-  ExternalLink,
   GraduationCap,
   LogIn,
-  Search,
   Sparkles,
   Users,
   FileText,
-  FolderDown,
   Bell,
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
-  Share2,
   Upload,
   Trash2,
-  Plus,
   Download,
-  FileCheck,
   Lock,
   User,
-  ScrollText,
-  Scale,
-  Briefcase,
-  PieChart,
-  Globe,
-  HeartHandshake,
-  Gavel,
-  MapPin,
-  BookMarked,
   Video,
+  ExternalLink,
+  X,
 } from 'lucide-react';
 import { appStore } from '@/lib/store';
 import { Course, Announcement, Student, CourseMaterial, AuthSession } from '@/lib/types';
 import { detectMeetingPlatform } from '@/lib/meetUtils';
+import ModalDialog from '@/components/common/ModalDialog';
+import CourseTileIcon from '@/components/common/CourseTileIcon';
 
 // Lightweight animated counter component (pure JS requestAnimationFrame, 0 dependencies)
 function AnimatedCounter({
@@ -65,7 +53,6 @@ function AnimatedCounter({
       if (!startTime) startTime = now;
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // easeOutCubic
       const easeOut = 1 - Math.pow(1 - progress, 3);
       const current = Math.floor(easeOut * target);
       setCount(current);
@@ -88,23 +75,6 @@ function AnimatedCounter({
       {suffix}
     </span>
   );
-}
-
-// Helper to get distinct, meaningful academic icons for each course
-function getCourseIcon(courseId: string, courseName: string) {
-  const lower = (courseId + ' ' + courseName).toLowerCase();
-  if (lower.includes('tafsir')) return BookOpen;
-  if (lower.includes('tarikh') || lower.includes('tasyri')) return ScrollText;
-  if (lower.includes('qowaid') || lower.includes('fiqhiyah')) return Scale;
-  if (lower.includes('bisnis')) return Briefcase;
-  if (lower.includes('kewarisan') || lower.includes('waris')) return PieChart;
-  if (lower.includes('internasional')) return Globe;
-  if (lower.includes('perkawinan')) return HeartHandshake;
-  if (lower.includes('ibadah')) return Sparkles;
-  if (lower.includes('perdata islam')) return Gavel;
-  if (lower.includes('agraria')) return MapPin;
-  if (lower.includes('hadits')) return BookMarked;
-  return BookOpen;
 }
 
 export default function HomePage() {
@@ -286,81 +256,80 @@ export default function HomePage() {
   );
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Banner - Clean Portfolio Academic Style */}
-      <section className="relative overflow-hidden bg-[#241206] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-[#3b1d0a]">
-        {/* Subtle Architectural Gradient Backdrop */}
-        <div 
-          className="absolute inset-0 opacity-30 pointer-events-none"
+    <div className="flex flex-col min-h-screen bg-[#FAF7F2] pb-20 md:pb-0">
+      {/* Hero Banner (#4A3200 Unified + Curved Bottom Overlap ala Foto 3) */}
+      <section className="relative overflow-hidden bg-[#4A3200] text-white pt-10 pb-20 sm:pt-14 sm:pb-24 px-4 sm:px-6 lg:px-8">
+        {/* Subtle Architectural Warm Highlight */}
+        <div
+          className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: `radial-gradient(circle at 50% 30%, rgba(157, 95, 47, 0.4), transparent 70%), linear-gradient(135deg, rgba(20, 10, 3, 0.98), rgba(42, 20, 7, 0.92))`
+            backgroundImage:
+              'radial-gradient(circle at 50% 20%, rgba(212, 161, 42, 0.24), transparent 65%), linear-gradient(180deg, rgba(74, 50, 0, 0.96) 0%, rgba(46, 31, 0, 1) 100%)',
           }}
         />
-        <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px]"></div>
+        <div className="absolute inset-0 opacity-[0.06] pointer-events-none bg-[radial-gradient(#FCE4A6_1px,transparent_1px)] [background-size:22px_22px]" />
 
         <div className="max-w-4xl mx-auto relative z-10 text-center">
           <div className="flex flex-col items-center">
-            {/* Logo Kelas Resmi di Tengah */}
+            {/* Logo Kelas Resmi */}
             <div className="flex justify-center mb-4 animate-fade-up">
-              <div className="relative group">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/10 p-1.5 ring-4 ring-amber-400/30 shadow-2xl flex items-center justify-center backdrop-blur-sm transition-transform hover:scale-105">
-                  <img
-                    src="/logo.png"
-                    alt="Logo Resmi Hukum Keluarga A 2025"
-                    className="w-full h-full object-contain rounded-full"
-                  />
-                </div>
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[26px] bg-[#332200] p-1.5 ring-4 ring-[#C8962E]/35 shadow-2xl flex items-center justify-center border border-[#FCE4A6]/35">
+                <img
+                  src="/logo.png"
+                  alt="Logo Resmi Hukum Keluarga A 2025"
+                  className="w-full h-full object-contain rounded-[20px]"
+                />
               </div>
             </div>
 
-            {/* Badge Portal Resmi Kelas HK A 2025 */}
-            <div className="animate-fade-up inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-amber-300/30 text-amber-200 text-[11px] sm:text-xs font-bold mb-3 shadow-xs">
+            {/* Badge Portal Resmi */}
+            <div className="animate-fade-up inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#332200]/90 border border-[#C8962E]/45 text-[#FCE4A6] text-[11px] sm:text-xs font-bold mb-3 shadow-xs">
               <span>Portal Resmi Kelas HK A 2025</span>
             </div>
 
-            {/* Core Title (Clean, Bold, Centered) */}
+            {/* Core Title */}
             <h1 className="animate-fade-up delay-100 text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight mb-2">
               Hukum Keluarga A 2025
             </h1>
 
-            {/* University & Faculty Subtitle */}
-            <p className="animate-fade-up delay-200 text-xs sm:text-sm font-semibold text-amber-200/90 tracking-wide uppercase mb-6">
+            {/* Full University Subtitle */}
+            <p className="animate-fade-up delay-200 text-xs sm:text-sm font-semibold text-[#FCE4A6]/95 tracking-wide uppercase mb-6">
               Fakultas Syariah • UIN Siber Syekh Nurjati Cirebon
             </p>
 
-            {/* Action Buttons - Rapi & Presisi di Tengah untuk HP & Desktop */}
-            <div className="animate-fade-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-2.5 w-full sm:w-auto">
+            {/* Tactile 3D Action Buttons (Foto 4 Inspired) */}
+            <div className="animate-fade-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
               {auth ? (
                 auth.role === 'ADMIN' ? (
                   <Link
                     href="/admin"
-                    className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-white hover:bg-stone-100 text-[#241206] font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2 active:scale-98"
+                    className="btn-3d-cream w-full sm:w-auto px-6 py-3 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-center space-x-2"
                   >
-                    <ShieldCheck className="w-4 h-4 text-[#8c4e24]" />
+                    <ShieldCheck className="w-4 h-4 text-[#4A3200]" />
                     <span>Buka Dashboard Admin</span>
                   </Link>
                 ) : (
                   <>
                     <Link
                       href="/mahasiswa"
-                      className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-[#8c4e24] hover:bg-[#723f1c] text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2 active:scale-98"
+                      className="btn-3d-cream w-full sm:w-auto px-6 py-3 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-center space-x-2"
                     >
-                      <CheckCircle2 className="w-4 h-4 text-amber-200" />
+                      <CheckCircle2 className="w-4 h-4 text-[#4A3200]" />
                       <span>Presensi Saya ({(auth.name || 'Mahasiswa').split(' ')[0]})</span>
                     </Link>
                     <Link
                       href="/library"
-                      className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2 active:scale-98"
+                      className="btn-3d-bronze w-full sm:w-auto px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center space-x-2"
                     >
-                      <BookOpen className="w-4 h-4 text-stone-950" />
+                      <BookOpen className="w-4 h-4 text-[#FCE4A6]" />
                       <span>E-Library</span>
                     </Link>
                     {isUserPj && (
                       <Link
                         href="/pj"
-                        className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm border border-white/20 transition-all flex items-center justify-center space-x-2"
+                        className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-[#FCE4A6] font-bold text-xs sm:text-sm border border-[#FCE4A6]/30 transition-all flex items-center justify-center space-x-2"
                       >
-                        <Sparkles className="w-4 h-4 text-amber-300" />
+                        <Sparkles className="w-4 h-4 text-[#FCE4A6]" />
                         <span>Portal PJ Mata Kuliah</span>
                       </Link>
                     )}
@@ -370,17 +339,17 @@ export default function HomePage() {
                 <>
                   <Link
                     href="/login"
-                    className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-[#8c4e24] hover:bg-[#723f1c] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2 active:scale-98"
+                    className="btn-3d-cream w-full sm:w-auto px-6 py-3 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-center space-x-2"
                   >
-                    <LogIn className="w-4 h-4 text-amber-200" />
+                    <LogIn className="w-4 h-4 text-[#4A3200]" />
                     <span>Masuk Portal Presensi</span>
                   </Link>
                   <button
                     type="button"
                     onClick={() => setShowRosterModal(true)}
-                    className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm border border-white/25 transition-all flex items-center justify-center space-x-2 active:scale-98"
+                    className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-[#332200]/90 hover:bg-[#291B00] text-[#FCE4A6] font-bold text-xs sm:text-sm border border-[#C8962E]/40 shadow-md transition-all flex items-center justify-center space-x-2"
                   >
-                    <Users className="w-4 h-4 text-amber-200" />
+                    <Users className="w-4 h-4 text-[#FCE4A6]" />
                     <span>Daftar {students.length} Mahasiswa</span>
                   </button>
                 </>
@@ -390,357 +359,410 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Main Content Area */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-10">
-        {/* STATISTIK BERJALAN DARI NOL (Count-Up Animation) */}
-        <section className="bg-white rounded-3xl p-5 sm:p-7 border border-stone-200/80 shadow-xs">
-          <div className="grid grid-cols-3 gap-2 sm:gap-6 divide-x divide-stone-100">
-            {/* Stat 1: Mahasiswa */}
-            <div className="flex flex-col items-center justify-center text-center px-2 py-1">
-              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-amber-50 text-[#8c4e24] flex items-center justify-center mb-1.5 shadow-2xs">
-                <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+      {/* Curved Sheet Overlap Container (Inspired by Foto 3 Center/Right Screen) */}
+      <div className="relative z-20 -mt-10 sm:-mt-12 rounded-t-[32px] sm:rounded-t-[44px] bg-[#FAF7F2] border-t border-[#E6DAC1]/60 flex-1">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-12 w-full space-y-9 sm:space-y-11">
+          {/* STATISTIK RINGKAS */}
+          <section className="bg-white rounded-[26px] p-5 sm:p-6 border border-[#E5D7BC] shadow-[0_6px_20px_-8px_rgba(74,50,0,0.12)]">
+            <div className="grid grid-cols-3 gap-2 sm:gap-6 divide-x divide-[#F1E8D6]">
+              {/* Stat 1: Mahasiswa */}
+              <div className="flex flex-col items-center justify-center text-center px-2 py-1">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[#F6EFE0] text-[#4A3200] border border-[#DFCCA6] flex items-center justify-center mb-1.5 shadow-2xs">
+                  <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="text-2xl sm:text-3xl font-extrabold text-[#241904] tracking-tight">
+                  <AnimatedCounter value={students.length || 32} duration={1400} />
+                </div>
+                <div className="text-[10px] sm:text-xs font-bold text-[#6B5730] mt-0.5 uppercase tracking-wider">
+                  Mahasiswa
+                </div>
               </div>
-              <div className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight font-sans">
-                <AnimatedCounter value={students.length || 30} duration={1400} />
+
+              {/* Stat 2: Semester Berjalan */}
+              <div className="flex flex-col items-center justify-center text-center px-2 py-1">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[#4A3200] text-[#FCE4A6] flex items-center justify-center mb-1.5 shadow-[0_3px_0_#261900]">
+                  <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="text-2xl sm:text-3xl font-extrabold text-[#4A3200] tracking-tight flex items-center justify-center">
+                  <span className="text-xs sm:text-base font-bold text-[#8C7549] mr-1">Sem</span>
+                  <AnimatedCounter value={activeSemester} duration={1000} />
+                </div>
+                <div className="text-[10px] sm:text-xs font-bold text-[#6B5730] mt-0.5 uppercase tracking-wider">
+                  Semester Aktif
+                </div>
               </div>
-              <div className="text-[10px] sm:text-xs font-semibold text-stone-500 mt-0.5 sm:mt-1 uppercase tracking-wider">
-                Mahasiswa
+
+              {/* Stat 3: Mata Kuliah */}
+              <div className="flex flex-col items-center justify-center text-center px-2 py-1">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[#F6EFE0] text-[#4A3200] border border-[#DFCCA6] flex items-center justify-center mb-1.5 shadow-2xs">
+                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="text-2xl sm:text-3xl font-extrabold text-[#241904] tracking-tight">
+                  <AnimatedCounter value={courses.length || 11} duration={1200} />
+                </div>
+                <div className="text-[10px] sm:text-xs font-bold text-[#6B5730] mt-0.5 uppercase tracking-wider">
+                  Mata Kuliah
+                </div>
               </div>
             </div>
+          </section>
 
-            {/* Stat 2: Semester Berjalan */}
-            <div className="flex flex-col items-center justify-center text-center px-2 py-1">
-              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-amber-100/70 text-[#8c4e24] flex items-center justify-center mb-1.5 shadow-2xs">
-                <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5" />
+          {/* JADWAL KULIAH HARI INI (Spotlight Section) */}
+          <section id="jadwal" className="scroll-mt-24">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#4A3200] text-[#FCE4A6] flex items-center justify-center shadow-[0_3px_0_#261900]">
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-lg sm:text-xl font-extrabold text-[#241904] tracking-tight">
+                    Jadwal Kuliah Hari Ini ({todayName})
+                  </h2>
+                  <p className="text-xs text-[#6B5730]">Perkuliahan terjadwal & akses ruang belajar</p>
+                </div>
               </div>
-              <div className="text-2xl sm:text-4xl font-extrabold text-[#8c4e24] tracking-tight font-sans flex items-center justify-center">
-                <span className="text-xs sm:text-lg font-bold text-stone-400 mr-1">Sem</span>
-                <AnimatedCounter value={activeSemester} duration={1000} />
-              </div>
-              <div className="text-[10px] sm:text-xs font-semibold text-stone-600 mt-0.5 sm:mt-1 uppercase tracking-wider">
-                Semester Aktif
-              </div>
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-weekly-schedule'))}
+                className="btn-3d-cream px-3.5 py-2 rounded-xl text-xs font-bold flex items-center space-x-1.5"
+              >
+                <CalendarDays className="w-3.5 h-3.5 text-[#4A3200]" />
+                <span>Jadwal {todayName} • Lihat Seminggu</span>
+              </button>
             </div>
 
-            {/* Stat 3: Mata Kuliah */}
-            <div className="flex flex-col items-center justify-center text-center px-2 py-1">
-              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-amber-50 text-[#8c4e24] flex items-center justify-center mb-1.5 shadow-2xs">
-                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
+            {todayCourses.length === 0 ? (
+              <div className="bg-white rounded-[26px] p-6 sm:p-8 border border-[#E5D7BC] text-center shadow-xs">
+                <div className="w-12 h-12 rounded-2xl bg-[#F6EFE0] border border-[#DFCCA6] text-[#4A3200] mx-auto flex items-center justify-center mb-3">
+                  <Calendar className="w-6 h-6" />
+                </div>
+                <h3 className="text-base font-extrabold text-[#241904]">Tidak Ada Jadwal Kuliah Hari Ini</h3>
+                <p className="text-xs text-[#6B5730] mt-1 max-w-md mx-auto">
+                  Hari ini ({todayName}) tidak ada perkuliahan terjadwal. Anda dapat memeriksa jadwal hari lainnya atau mengakses repositori materi kuliah di bawah.
+                </p>
               </div>
-              <div className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight font-sans">
-                <AnimatedCounter value={courses.length || 11} duration={1200} />
-              </div>
-              <div className="text-[10px] sm:text-xs font-semibold text-stone-500 mt-0.5 sm:mt-1 uppercase tracking-wider">
-                Mata Kuliah
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Jadwal Kuliah Hari Ini (Container Coklat Hukum Keluarga) */}
-        <section id="jadwal" className="scroll-mt-24">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-            <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 rounded-xl bg-amber-100 text-[#8c4e24] flex items-center justify-center shadow-xs">
-                <Calendar className="w-5 h-5" />
-              </div>
-              <div>
-                <h2 className="text-lg sm:text-xl font-bold text-stone-900 tracking-tight">
-                  Jadwal Kuliah Hari Ini ({todayName})
-                </h2>
-              </div>
-            </div>
-            <span className="text-xs font-bold px-3.5 py-1.5 bg-[#8c4e24] text-white rounded-full w-fit shadow-xs">
-              Jadwal {todayName}
-            </span>
-          </div>
-
-          {todayCourses.length === 0 ? (
-            <div className="bg-amber-50/60 rounded-2xl p-6 border border-amber-200/80 text-center shadow-xs">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 text-[#8c4e24] mx-auto flex items-center justify-center mb-2.5">
-                <Calendar className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm sm:text-base font-bold text-[#783e18]">Tidak Ada Jadwal Kuliah Hari Ini</h3>
-              <p className="text-xs text-stone-500 mt-1 max-w-md mx-auto">
-                Hari ini ({todayName}) tidak ada perkuliahan terjadwal.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {todayCourses.map((c) => (
-                <div
-                  key={c.id}
-                  className="bg-gradient-to-br from-[#8c4e24] via-[#783e18] to-[#5a2a0c] text-white rounded-2xl p-5 border border-amber-500/30 shadow-md hover:shadow-xl transition-all flex flex-col justify-between group"
-                >
-                  <div>
-                    <div className="flex items-center justify-between text-xs mb-2.5">
-                      <span className="font-mono font-bold text-amber-200 bg-black/30 px-2 py-0.5 rounded border border-amber-300/30 text-[11px]">
-                        {c.code}
-                      </span>
-                      <span className="font-bold text-amber-100 bg-white/15 px-2 py-0.5 rounded text-[11px]">
-                        {c.sks} SKS
-                      </span>
-                    </div>
-                    <h3 className="font-bold text-base sm:text-lg text-white mb-1 leading-snug group-hover:text-amber-200 transition-colors">
-                      {c.name}
-                    </h3>
-                    <p className="text-xs text-amber-100/90 mb-3 font-medium">
-                      {c.dosen}
-                    </p>
-
-                    <div className="pt-2.5 border-t border-white/20 text-xs text-amber-100/90 space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-amber-200/80">Waktu & Ruang:</span>
-                        <span className="font-semibold text-white">{c.time} • Ruang {c.room}</span>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {todayCourses.map((c) => (
+                  <div
+                    key={c.id}
+                    className="bg-[#4A3200] text-white rounded-[26px] p-5 border border-[#785406] shadow-[0_8px_20px_-6px_rgba(74,50,0,0.4)] flex flex-col justify-between group"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-3">
+                        <span className="font-mono font-bold text-[#FCE4A6] bg-[#332200] px-2.5 py-1 rounded-lg border border-[#C8962E]/35 text-[11px]">
+                          {c.code}
+                        </span>
+                        <span className="font-bold text-[#FCE4A6] bg-[#634300] px-2.5 py-1 rounded-lg text-[11px]">
+                          {c.sks} SKS
+                        </span>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-amber-200/80">PJ Kelas:</span>
-                        <span className="font-semibold text-amber-200 truncate max-w-[170px]">{getPjNames(c.pjNims)}</span>
+                      <h3 className="font-extrabold text-base sm:text-lg text-white mb-1 leading-snug group-hover:text-[#FCE4A6] transition-colors">
+                        {c.name}
+                      </h3>
+                      <p className="text-xs text-[#F6EFE0]/85 mb-3.5 font-medium">
+                        {c.dosen}
+                      </p>
+
+                      <div className="pt-3 border-t border-white/15 text-xs text-[#F6EFE0]/90 space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[#FCE4A6]/75">Waktu & Ruang:</span>
+                          <span className="font-bold text-white">{c.time} • {c.room}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[#FCE4A6]/75">PJ Kelas:</span>
+                          <span className="font-semibold text-[#FCE4A6] truncate max-w-[170px]">{getPjNames(c.pjNims)}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="mt-4 pt-3 border-t border-white/20 grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedCourse(c)}
-                      className="py-2 px-2 rounded-xl bg-white hover:bg-amber-50 text-[#783e18] font-bold text-xs flex items-center justify-center space-x-1 transition-all shadow-sm active:scale-98 outline-none focus:outline-none select-none [-webkit-tap-highlight-color:transparent]"
-                      style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
-                    >
-                      <BookOpen className="w-3.5 h-3.5" />
-                      <span>Materi / Tugas</span>
-                    </button>
-                    {c.meetingUrl && c.meetingUrl.trim() ? (
-                      <a
-                        href={c.meetingUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="py-2 px-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-extrabold text-xs flex items-center justify-center space-x-1 transition-all shadow-sm active:scale-98 text-center ring-1 ring-emerald-300/40 animate-pulse"
-                        title={`Buka ${detectMeetingPlatform(c.meetingUrl).label}`}
-                      >
-                        <Video className="w-3.5 h-3.5 text-white" />
-                        <span className="truncate">{detectMeetingPlatform(c.meetingUrl).actionText}</span>
-                      </a>
-                    ) : (
+                    <div className="mt-4 pt-3 border-t border-white/15 grid grid-cols-2 gap-2.5">
                       <button
                         type="button"
-                        disabled
-                        className="py-2 px-2 rounded-xl bg-white/10 border border-white/10 text-stone-300/60 font-semibold text-xs flex items-center justify-center space-x-1 cursor-not-allowed opacity-75"
-                        title="Tautan Google Meet / Zoom belum disematkan oleh PJ atau Dosen"
+                        onClick={() => setSelectedCourse(c)}
+                        className="btn-3d-cream py-2.5 px-2 rounded-xl font-extrabold text-xs flex items-center justify-center space-x-1.5"
                       >
-                        <Video className="w-3.5 h-3.5 text-stone-400" />
-                        <span>Belum Ada Link</span>
+                        <BookOpen className="w-3.5 h-3.5" />
+                        <span>Materi / Tugas</span>
                       </button>
-                    )}
+                      {c.meetingUrl && c.meetingUrl.trim() ? (
+                        <a
+                          href={c.meetingUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="py-2.5 px-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-extrabold text-xs flex items-center justify-center space-x-1 shadow-[0_3px_0_#047857] active:translate-y-[2px] transition-all text-center"
+                          title={`Buka ${detectMeetingPlatform(c.meetingUrl).label}`}
+                        >
+                          <Video className="w-3.5 h-3.5 text-white" />
+                          <span className="truncate">{detectMeetingPlatform(c.meetingUrl).actionText}</span>
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          disabled
+                          className="py-2.5 px-2 rounded-xl bg-[#332200]/70 border border-white/10 text-[#F6EFE0]/50 font-semibold text-xs flex items-center justify-center space-x-1 cursor-not-allowed"
+                          title="Tautan Google Meet / Zoom belum disematkan oleh PJ atau Dosen"
+                        >
+                          <Video className="w-3.5 h-3.5" />
+                          <span>Belum Ada Link</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* MATA KULIAH - SQUIRCLE 4x3 MENU GRID (Inspired by Foto 6 + #4A3200 Harmonized) */}
+          <section id="matakuliah" className="scroll-mt-24">
+            <div className="flex items-center justify-between gap-3 mb-5">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#F6EFE0] text-[#4A3200] border border-[#DFCCA6] flex items-center justify-center shadow-2xs">
+                  <BookOpen className="w-5 h-5" />
                 </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* 11 MATA KULIAH - 3-CIRCLE GRID (Bulat Grid 3 Sesuai Sketsa User) */}
-        <section id="matakuliah" className="scroll-mt-24">
-          <div className="flex items-center justify-between gap-3 mb-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 rounded-xl bg-amber-50 text-[#8c4e24] flex items-center justify-center border border-amber-200/60 shadow-xs">
-                <BookOpen className="w-5 h-5" />
+                <div>
+                  <h2 className="text-lg sm:text-xl font-extrabold text-[#241904] tracking-tight">
+                    Mata Kuliah & Repositori
+                  </h2>
+                  <p className="text-xs text-[#6B5730]">Pilih mata kuliah untuk akses silabus, materi, & ruang kelas</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-lg sm:text-xl font-bold text-stone-900 tracking-tight">
-                  {courses.length} Mata Kuliah & Repositori
-                </h2>
-              </div>
+              <span className="text-xs font-extrabold px-3.5 py-1.5 rounded-full bg-[#F6EFE0] text-[#4A3200] border border-[#DFCCA6]">
+                {courses.length} Mata Kuliah
+              </span>
             </div>
-            <span className="text-xs font-bold px-3.5 py-1.5 rounded-full bg-amber-50 text-[#8c4e24] border border-amber-200/80 shadow-2xs">
-              {courses.length} Mata Kuliah
-            </span>
-          </div>
 
-          {/* 3-Column Circular Bubble Grid (Mobile: 3 Bulat per baris, Tablet: 4, Desktop: 6) */}
-          <div className="bg-white rounded-3xl p-5 sm:p-8 border border-stone-200/80 shadow-xs">
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-y-7 gap-x-2 sm:gap-6 py-2">
-              {courses.map((c) => {
+            <div className="bg-white rounded-[28px] p-4 sm:p-6 border border-[#E5D7BC] shadow-[0_6px_20px_-8px_rgba(74,50,0,0.1)]">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5 sm:gap-4">
+                {courses.map((c) => {
                   const courseMats = materials.filter((m) => m.courseId === c.id);
-                  const CourseIcon = getCourseIcon(c.id, c.name);
+                  const isTodayCourse = (c?.day || '').toLowerCase().trim() === todayName.toLowerCase().trim();
 
                   return (
                     <button
                       key={c.id}
                       type="button"
                       onClick={() => setSelectedCourse(c)}
-                      className="group flex flex-col items-center text-center outline-none focus:outline-none focus:ring-0 select-none transition-all hover:-translate-y-1 active:scale-95 [-webkit-tap-highlight-color:transparent]"
-                      style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+                      className={`group rounded-[22px] p-4 sm:p-5 flex flex-col items-center justify-between text-center min-h-[156px] sm:min-h-[172px] ${
+                        isTodayCourse ? 'tile-3d-bronze text-white' : 'tile-3d-cream text-[#241904]'
+                      }`}
                     >
-                      {/* Circular Bubble with luxury espresso gradient & golden ring */}
-                      <div
-                        className="relative w-18 h-18 sm:w-22 sm:h-22 rounded-full bg-gradient-to-b from-[#2a1306] via-[#1c0c04] to-[#100602] text-white p-1 shadow-md shadow-amber-950/40 group-hover:shadow-xl group-hover:shadow-[#8c4e24]/30 transition-all duration-300 flex flex-col items-center justify-center border-2 border-amber-500/40 group-hover:border-amber-300 group-hover:scale-105 select-none"
-                        style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
-                      >
-                        {/* Soft radial glow */}
-                        <div className="absolute inset-1 rounded-full bg-radial from-amber-500/10 to-transparent pointer-events-none" />
+                      <CourseTileIcon
+                        courseId={c.id}
+                        courseName={c.name}
+                        isHighlighted={isTodayCourse}
+                        badgeCount={courseMats.length}
+                        badgeLabel={isTodayCourse ? 'HARI INI' : undefined}
+                      />
 
-                        <CourseIcon className="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 drop-shadow-[0_2px_6px_rgba(245,158,11,0.3)] group-hover:scale-110 transition-transform mb-1 relative z-10" />
-
-                        <span className="relative z-10 text-[9px] sm:text-[10px] font-mono font-extrabold text-amber-200/95 tracking-tight px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/25">
-                          {c.sks} SKS
-                        </span>
-
-                        {/* File badge if any */}
-                        {courseMats.length > 0 && (
-                          <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-amber-400 text-stone-950 font-black text-[10px] flex items-center justify-center ring-2 ring-white shadow-xs z-20">
-                            {courseMats.length}
+                      <div className="mt-3 w-full">
+                        <h3
+                          className={`font-extrabold text-xs sm:text-[13px] leading-snug line-clamp-2 ${
+                            isTodayCourse ? 'text-white' : 'text-[#241904] group-hover:text-[#4A3200]'
+                          }`}
+                        >
+                          {c.name}
+                        </h3>
+                        <div className="mt-1.5 flex items-center justify-center gap-1.5 flex-wrap">
+                          <span
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                              isTodayCourse
+                                ? 'bg-[#332200] text-[#FCE4A6] border border-[#C8962E]/40'
+                                : 'bg-white/80 text-[#5A4824] border border-[#DFCCA6]'
+                            }`}
+                          >
+                            {c.day || c.code}
                           </span>
-                        )}
+                          <span
+                            className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md ${
+                              isTodayCourse
+                                ? 'bg-[#634300] text-[#FCE4A6]'
+                                : 'bg-[#E8D9BA]/70 text-[#4A3200]'
+                            }`}
+                          >
+                            {c.sks} SKS
+                          </span>
+                        </div>
                       </div>
-
-                      {/* Course Name centered underneath */}
-                      <h3 className="mt-2.5 font-bold text-[11px] sm:text-xs text-stone-800 group-hover:text-[#8c4e24] transition-colors line-clamp-2 leading-tight px-1 max-w-[105px] sm:max-w-[125px] select-none pointer-events-none">
-                        {c.name}
-                      </h3>
-                      <span className="text-[10px] text-stone-500 bg-stone-100 group-hover:bg-amber-50 group-hover:text-[#8c4e24] mt-1 font-semibold px-2 py-0.5 rounded-md border border-stone-200/60 transition-colors line-clamp-1 max-w-[95px] select-none pointer-events-none">
-                        {c.day ? `${c.day}` : c.code}
-                      </span>
                     </button>
                   );
                 })}
-              </div>
-          </div>
-        </section>
 
-        {/* Papan Informasi & Pengumuman Kelas (Clean Cards + Pop-up Modal) */}
-        <section id="pengumuman" className="scroll-mt-24">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-xl bg-amber-50 text-[#8c4e24] flex items-center justify-center border border-amber-200/60 shadow-xs">
-                <Bell className="w-4 h-4" />
-              </div>
-              <div>
-                <h2 className="text-lg sm:text-xl font-bold text-stone-900 tracking-tight">
-                  Papan Informasi & Pengumuman
-                </h2>
+                {/* Slot ke-12: Tile "Jadwal Seminggu" melengkapi Grid 4x3 ala "Lainnya" di Foto 6 */}
+                <button
+                  type="button"
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-weekly-schedule'))}
+                  className="tile-3d-cream group rounded-[22px] p-4 sm:p-5 flex flex-col items-center justify-between text-center min-h-[156px] sm:min-h-[172px]"
+                >
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white border border-[#DFCCA6] p-2 shadow-[inset_0_2px_2px_rgba(255,255,255,0.9),0_4px_0_#D7C49E] flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <div className="grid grid-cols-2 gap-1 w-full h-full">
+                      <span className="rounded-md bg-[#4A3200]" />
+                      <span className="rounded-md bg-[#C8962E]" />
+                      <span className="rounded-md bg-[#785406]" />
+                      <span className="rounded-md bg-[#DFCCA6]" />
+                    </div>
+                  </div>
+
+                  <div className="mt-3 w-full">
+                    <h3 className="font-extrabold text-xs sm:text-[13px] leading-snug text-[#4A3200]">
+                      Jadwal Seminggu
+                    </h3>
+                    <div className="mt-1.5 flex items-center justify-center">
+                      <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-white/85 text-[#5A4824] border border-[#DFCCA6]">
+                        Senin – Sabtu
+                      </span>
+                    </div>
+                  </div>
+                </button>
               </div>
             </div>
-            <span className="text-xs text-stone-400">
-              {announcements.length} Pengumuman
-            </span>
-          </div>
+          </section>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
-            {announcements.map((ann) => (
-              <div
-                key={ann.id}
-                onClick={() => setSelectedAnnouncement(ann)}
-                className="cursor-pointer bg-white rounded-2xl p-4 sm:p-5 border border-stone-200/90 hover:border-[#8c4e24] hover:shadow-md transition-all flex flex-col justify-between group active:scale-98"
-              >
-                <div>
-                  <div className="flex items-center justify-between text-xs mb-2">
-                    <span
-                      className={`font-bold px-2 py-0.5 rounded-full text-[10px] ${
-                        ann.category === 'PENTING'
-                          ? 'bg-rose-100 text-rose-800'
-                          : ann.category === 'TUGAS'
-                          ? 'bg-amber-100 text-amber-800'
-                          : 'bg-stone-100 text-stone-700'
-                      }`}
-                    >
-                      {ann.category}
-                    </span>
-                    <span className="text-stone-400 font-mono text-[11px]">{ann.date}</span>
-                  </div>
-                  <h3 className="font-bold text-sm text-stone-900 group-hover:text-[#8c4e24] transition-colors line-clamp-2 mb-1 leading-snug">
-                    {ann.title}
-                  </h3>
-                  <p className="text-xs text-stone-500 line-clamp-2 leading-relaxed">
-                    {ann.content}
-                  </p>
+          {/* PAPAN INFORMASI & PENGUMUMAN KELAS */}
+          <section id="pengumuman" className="scroll-mt-24">
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#F6EFE0] text-[#4A3200] border border-[#DFCCA6] flex items-center justify-center shadow-2xs">
+                  <Bell className="w-5 h-5" />
                 </div>
-                <div className="mt-3 pt-2.5 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-400">
-                  <span className="truncate max-w-[140px]">Oleh: {ann.author}</span>
-                  <span className="text-[#8c4e24] font-semibold flex items-center space-x-1 group-hover:translate-x-0.5 transition-transform">
-                    <span>Baca Detail</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </span>
+                <div>
+                  <h2 className="text-lg sm:text-xl font-extrabold text-[#241904] tracking-tight">
+                    Papan Informasi & Pengumuman
+                  </h2>
+                  <p className="text-xs text-[#6B5730]">Info akademik, tugas, dan agenda kelas HK A</p>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
+              <span className="text-xs font-bold text-[#6B5730] bg-white px-3 py-1 rounded-full border border-[#E5D7BC]">
+                {announcements.length} Info
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {announcements.map((ann) => (
+                <button
+                  key={ann.id}
+                  type="button"
+                  onClick={() => setSelectedAnnouncement(ann)}
+                  className="text-left bg-white rounded-[22px] p-4 sm:p-5 border border-[#E5D7BC] hover:border-[#4A3200]/50 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group active:translate-y-[1px]"
+                >
+                  <div className="w-full">
+                    <div className="flex items-center justify-between text-xs mb-2.5">
+                      <span
+                        className={`font-bold px-2.5 py-0.5 rounded-full text-[10px] ${
+                          ann.category === 'PENTING'
+                            ? 'bg-rose-100 text-rose-800 border border-rose-200'
+                            : ann.category === 'TUGAS'
+                            ? 'bg-[#F6EFE0] text-[#4A3200] border border-[#DFCCA6]'
+                            : 'bg-[#F5F2EB] text-[#5A4824] border border-[#E5D7BC]'
+                        }`}
+                      >
+                        {ann.category}
+                      </span>
+                      <span className="text-[#8C7549] font-mono text-[11px]">{ann.date}</span>
+                    </div>
+                    <h3 className="font-extrabold text-sm text-[#241904] group-hover:text-[#4A3200] transition-colors line-clamp-2 mb-1.5 leading-snug">
+                      {ann.title}
+                    </h3>
+                    <p className="text-xs text-[#6B5730] line-clamp-2 leading-relaxed">
+                      {ann.content}
+                    </p>
+                  </div>
+                  <div className="w-full mt-3.5 pt-2.5 border-t border-[#F1E8D6] flex items-center justify-between text-[11px] text-[#8C7549]">
+                    <span className="truncate max-w-[140px]">Oleh: {ann.author}</span>
+                    <span className="text-[#4A3200] font-bold flex items-center space-x-1 group-hover:translate-x-0.5 transition-transform">
+                      <span>Baca Detail</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
 
       {/* Modal: Course Repository / Materi Detail */}
-      {selectedCourse && (
-        <div className="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col shadow-2xl border border-stone-200 animate-in fade-in zoom-in-95 duration-150">
-            {/* Modal Header */}
-            <div className="bg-gradient-to-r from-[#8c4e24] to-[#5a2a0c] p-5 text-white flex items-start justify-between">
-              <div>
-                <span className="text-xs font-mono bg-white/20 px-2 py-0.5 rounded text-amber-200">
+      <ModalDialog
+        open={Boolean(selectedCourse)}
+        onClose={() => setSelectedCourse(null)}
+        labelledBy="course-modal-title"
+        maxWidthClass="max-w-2xl"
+      >
+        {selectedCourse && (
+          <>
+            {/* Modal Header (#4A3200) */}
+            <div className="bg-[#4A3200] p-5 text-white flex items-start justify-between shrink-0">
+              <div className="pr-4">
+                <span className="text-xs font-mono bg-[#332200] border border-[#C8962E]/40 px-2.5 py-0.5 rounded-lg text-[#FCE4A6]">
                   {selectedCourse.code} • {selectedCourse.sks} SKS
                 </span>
-                <h3 className="text-lg font-bold mt-1.5">{selectedCourse.name}</h3>
-                <p className="text-xs text-amber-100/90 mt-0.5">
+                <h1 id="course-modal-title" className="text-lg font-extrabold mt-2">
+                  {selectedCourse.name}
+                </h1>
+                <p className="text-xs text-[#F6EFE0]/85 mt-0.5">
                   Dosen: {selectedCourse.dosen} | PJ: {getPjNames(selectedCourse.pjNims)}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedCourse(null)}
-                className="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 text-base font-bold"
+                aria-label="Tutup Detail Mata Kuliah"
+                className="btn-3d-cream w-9 h-9 rounded-xl flex items-center justify-center text-[#4A3200] shrink-0"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Modal Content */}
-            <div className="p-6 overflow-y-auto space-y-5 flex-1 text-xs">
+            <div className="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1 text-xs bg-[#FAF7F2]">
               <div>
-                <h4 className="font-bold text-stone-900 uppercase tracking-wider text-[11px] mb-1.5">
+                <h2 className="font-extrabold text-[#4A3200] uppercase tracking-wider text-[11px] mb-1.5">
                   Deskripsi & Silabus
-                </h4>
-                <p className="text-stone-600 leading-relaxed bg-stone-50 p-3 rounded-xl border border-stone-200">
+                </h2>
+                <p className="text-[#4A3200]/90 leading-relaxed bg-white p-3.5 rounded-2xl border border-[#E5D7BC]">
                   {selectedCourse.description}
                 </p>
               </div>
 
-              {/* Ruang Tatap Muka Virtual (Kuliah Online) */}
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-50 to-orange-50/40 border border-amber-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+              {/* Ruang Tatap Muka Virtual (Kuliah Online - Protected Login Check) */}
+              <div className="p-4 rounded-2xl bg-[#F6EFE0] border border-[#DFCCA6] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-start space-x-3">
-                  <div className="w-10 h-10 rounded-2xl bg-[#8c4e24] text-white flex items-center justify-center flex-shrink-0 shadow-xs">
+                  <div className="w-10 h-10 rounded-2xl bg-[#4A3200] text-[#FCE4A6] flex items-center justify-center flex-shrink-0 shadow-[0_3px_0_#261900]">
                     <Video className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="flex items-center space-x-2">
-                      <h4 className="font-bold text-stone-900 text-xs sm:text-sm">
+                    <div className="flex items-center space-x-2 flex-wrap gap-1">
+                      <h2 className="font-extrabold text-[#241904] text-xs sm:text-sm">
                         Kuliah Online (Tatap Muka Virtual)
-                      </h4>
+                      </h2>
                       <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
                         Bebas Waktu
                       </span>
                     </div>
-                    <p className="text-[11px] text-stone-600 mt-0.5 leading-relaxed">
-                      Ruang tatap muka virtual tanpa batas waktu 60 menit. Dosen dapat langsung masuk via tautan khusus tanpa harus login.
+                    <p className="text-[11px] text-[#5A4824] mt-0.5 leading-relaxed">
+                      Ruang tatap muka virtual tanpa batas waktu 60 menit. Mahasiswa wajib login terlebih dahulu untuk bergabung.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2 self-end sm:self-center flex-shrink-0">
                   <Link
                     href={auth ? `/kuliah-online/${selectedCourse.id}` : `/login?redirect=/kuliah-online/${selectedCourse.id}`}
-                    className="px-4 py-2 rounded-xl bg-[#8c4e24] hover:bg-[#723f1c] text-white font-bold text-xs flex items-center space-x-1.5 shadow-md shadow-[#8c4e24]/20 transition-all active:scale-95"
+                    className="btn-3d-bronze px-4 py-2.5 rounded-xl font-bold text-xs flex items-center space-x-1.5"
                   >
-                    <Video className="w-3.5 h-3.5 text-amber-300" />
+                    <Video className="w-3.5 h-3.5 text-[#FCE4A6]" />
                     <span>Masuk Ruang Kuliah</span>
                   </Link>
                 </div>
               </div>
 
               <div>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 p-3.5 bg-stone-50 rounded-2xl border border-stone-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 p-3.5 bg-white rounded-2xl border border-[#E5D7BC]">
                   <div>
-                    <h4 className="font-bold text-stone-900 uppercase tracking-wider text-[11px]">
+                    <h2 className="font-extrabold text-[#4A3200] uppercase tracking-wider text-[11px]">
                       Berkas Materi & Tugas Kuliah
-                    </h4>
-                    <p className="text-[11px] text-stone-500">
+                    </h2>
+                    <p className="text-[11px] text-[#6B5730]">
                       {auth
                         ? 'Daftar materi dan tugas perkuliahan.'
                         : 'Login diperlukan untuk mengunggah materi.'}
@@ -749,13 +771,13 @@ export default function HomePage() {
                   <div className="flex items-center space-x-2">
                     {auth ? (
                       <label
-                        className={`cursor-pointer px-4 py-2 rounded-xl text-white font-bold text-xs flex items-center space-x-2 shadow-md transition-all active:scale-95 ${
+                        className={`cursor-pointer px-4 py-2 rounded-xl font-bold text-xs flex items-center space-x-2 ${
                           isUploading
-                            ? 'bg-stone-400 cursor-not-allowed'
-                            : 'bg-[#8c4e24] hover:bg-[#723f1c] shadow-[#8c4e24]/20'
+                            ? 'bg-stone-400 text-white cursor-not-allowed'
+                            : 'btn-3d-bronze'
                         }`}
                       >
-                        <Upload className="w-4 h-4" />
+                        <Upload className="w-4 h-4 text-[#FCE4A6]" />
                         <span>{isUploading ? 'Mengunggah Berkas...' : 'Upload File / Tugas'}</span>
                         <input
                           type="file"
@@ -767,9 +789,9 @@ export default function HomePage() {
                     ) : (
                       <Link
                         href="/login"
-                        className="px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#8c4e24] font-bold text-xs flex items-center space-x-1.5 transition-all border border-amber-200/80 shadow-xs"
+                        className="btn-3d-cream px-3.5 py-2 rounded-xl font-bold text-xs flex items-center space-x-1.5"
                       >
-                        <Lock className="w-3.5 h-3.5 text-[#8c4e24]" />
+                        <Lock className="w-3.5 h-3.5 text-[#4A3200]" />
                         <span>Login untuk Upload</span>
                       </Link>
                     )}
@@ -779,7 +801,7 @@ export default function HomePage() {
                         href={selectedCourse.driveLink}
                         target="_blank"
                         rel="noreferrer"
-                        className="px-3 py-2 rounded-xl bg-white border border-stone-200 hover:bg-stone-100 text-stone-700 font-semibold text-xs flex items-center space-x-1 transition-colors"
+                        className="btn-3d-cream px-3 py-2 rounded-xl font-bold text-xs flex items-center space-x-1"
                       >
                         <span>Google Drive</span>
                         <ExternalLink className="w-3 h-3" />
@@ -790,13 +812,13 @@ export default function HomePage() {
 
                 {/* DAFTAR MATERI & TUGAS YANG BISA DIUNDUH */}
                 {materials.filter((m) => m.courseId === selectedCourse.id).length === 0 ? (
-                  <div className="text-center py-8 bg-stone-50 rounded-2xl border border-dashed border-stone-200 text-stone-400 space-y-1.5">
-                    <FileText className="w-8 h-8 mx-auto text-stone-300" />
-                    <p className="font-semibold text-stone-600">
+                  <div className="text-center py-8 bg-white rounded-2xl border border-dashed border-[#D7C49E] text-[#6B5730] space-y-1.5">
+                    <FileText className="w-8 h-8 mx-auto text-[#C5B084]" />
+                    <p className="font-semibold text-[#4A3200]">
                       Belum ada berkas atau tugas yang diunggah untuk mata kuliah ini.
                     </p>
                     {!auth && (
-                      <p className="text-[11px] text-stone-400">
+                      <p className="text-[11px] text-[#8C7549]">
                         Silakan login terlebih dahulu untuk mengunggah materi perkuliahan.
                       </p>
                     )}
@@ -805,215 +827,224 @@ export default function HomePage() {
                   <div className="space-y-2.5">
                     {materials
                       .filter((m) => m.courseId === selectedCourse.id)
-                      .map((mat) => {
-                        return (
-                          <div
-                            key={mat.id}
-                            className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 rounded-2xl border border-stone-200 hover:border-amber-300 hover:bg-amber-50/20 transition-all bg-white gap-3 shadow-xs"
-                          >
-                            <div className="flex items-start space-x-3">
-                              <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 bg-amber-100 text-[#8c4e24]">
-                                <FileText className="w-4 h-4" />
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <p className="font-bold text-stone-900 text-xs sm:text-sm">
-                                  {mat.title}
-                                </p>
-                                <div className="text-[11px] text-stone-500 mt-1 flex flex-wrap items-center gap-1.5">
-                                  <span className="inline-flex items-center gap-1 font-semibold text-stone-700 bg-stone-100 border border-stone-200/80 px-2 py-0.5 rounded-md">
-                                    <User className="w-3 h-3 text-[#8c4e24]" />
-                                    <span>Oleh: {mat.uploadedBy || 'Mahasiswa'}</span>
-                                  </span>
-                                  <span>•</span>
-                                  <span className="text-stone-400">{mat.uploadedAt}</span>
-                                  {mat.fileSize && (
-                                    <>
-                                      <span>•</span>
-                                      <span className="font-mono text-stone-600 font-semibold text-[10px] bg-stone-50 px-1.5 py-0.5 rounded border border-stone-200/60">{mat.fileSize}</span>
-                                    </>
-                                  )}
-                                </div>
-                              </div>
+                      .map((mat) => (
+                        <div
+                          key={mat.id}
+                          className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 rounded-2xl border border-[#E5D7BC] hover:border-[#4A3200]/45 transition-all bg-white gap-3 shadow-2xs"
+                        >
+                          <div className="flex items-start space-x-3">
+                            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 bg-[#F6EFE0] text-[#4A3200] border border-[#DFCCA6]">
+                              <FileText className="w-4 h-4" />
                             </div>
-
-                            {/* Actions: Unduh & Hapus (Protected for Auth/Class only) */}
-                            <div className="flex items-center space-x-2 self-end sm:self-center flex-shrink-0">
-                              {auth ? (
-                                <a
-                                  href={mat.url}
-                                  download={mat.title}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="px-3.5 py-1.5 rounded-xl bg-stone-100 hover:bg-[#8c4e24] hover:text-white font-bold text-stone-800 transition-all flex items-center space-x-1.5 text-xs shadow-xs"
-                                >
-                                  <Download className="w-3.5 h-3.5 text-[#8c4e24] group-hover:text-white" />
-                                  <span>Unduh / Buka</span>
-                                </a>
-                              ) : (
-                                <Link
-                                  href="/login"
-                                  className="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#8c4e24] border border-amber-200/80 font-bold text-xs transition-all flex items-center space-x-1.5 shadow-2xs"
-                                >
-                                  <Lock className="w-3.5 h-3.5 text-[#8c4e24]" />
-                                  <span>Login untuk Unduh</span>
-                                </Link>
-                              )}
-
-                              {/* Tombol Hapus Berkas: Khusus yang sudah Login */}
-                              {auth && (
-                                <button
-                                  type="button"
-                                  onClick={() => handleDeleteMaterial(mat.id, mat.title)}
-                                  title="Hapus berkas ini"
-                                  className="p-2 text-stone-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
-                                >
-                                  <Trash2 className="w-4 h-4 text-rose-500" />
-                                </button>
-                              )}
+                            <div className="min-w-0 flex-1">
+                              <p className="font-bold text-[#241904] text-xs sm:text-sm">
+                                {mat.title}
+                              </p>
+                              <div className="text-[11px] text-[#6B5730] mt-1 flex flex-wrap items-center gap-1.5">
+                                <span className="inline-flex items-center gap-1 font-semibold text-[#4A3200] bg-[#FAF7F2] border border-[#E5D7BC] px-2 py-0.5 rounded-md">
+                                  <User className="w-3 h-3 text-[#4A3200]" />
+                                  <span>Oleh: {mat.uploadedBy || 'Mahasiswa'}</span>
+                                </span>
+                                <span>•</span>
+                                <span className="text-[#8C7549]">{mat.uploadedAt}</span>
+                                {mat.fileSize && (
+                                  <>
+                                    <span>•</span>
+                                    <span className="font-mono text-[#4A3200] font-semibold text-[10px] bg-[#F6EFE0] px-1.5 py-0.5 rounded border border-[#DFCCA6]">
+                                      {mat.fileSize}
+                                    </span>
+                                  </>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        );
-                      })}
+
+                          {/* Actions: Unduh & Hapus */}
+                          <div className="flex items-center space-x-2 self-end sm:self-center flex-shrink-0">
+                            {auth ? (
+                              <a
+                                href={mat.url}
+                                download={mat.title}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn-3d-cream px-3.5 py-1.5 rounded-xl font-bold text-xs flex items-center space-x-1.5"
+                              >
+                                <Download className="w-3.5 h-3.5 text-[#4A3200]" />
+                                <span>Unduh / Buka</span>
+                              </a>
+                            ) : (
+                              <Link
+                                href="/login"
+                                className="btn-3d-cream px-3 py-1.5 rounded-xl font-bold text-xs flex items-center space-x-1.5"
+                              >
+                                <Lock className="w-3.5 h-3.5 text-[#4A3200]" />
+                                <span>Login untuk Unduh</span>
+                              </Link>
+                            )}
+
+                            {auth && (
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteMaterial(mat.id, mat.title)}
+                                title="Hapus berkas ini"
+                                aria-label={`Hapus berkas ${mat.title}`}
+                                className="p-2 text-[#8C7549] hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+                              >
+                                <Trash2 className="w-4 h-4 text-rose-500" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                   </div>
                 )}
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 bg-stone-50 border-t border-stone-200 flex justify-end">
+            <div className="p-4 bg-white border-t border-[#E5D7BC] flex justify-end shrink-0">
               <button
                 type="button"
                 onClick={() => setSelectedCourse(null)}
-                className="px-4 py-2 rounded-xl bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-semibold transition-colors"
+                className="btn-3d-cream px-5 py-2 rounded-xl text-xs font-bold"
               >
                 Tutup
               </button>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </ModalDialog>
 
       {/* Modal: Detail Pengumuman Pop-up */}
-      {selectedAnnouncement && (
-        <div className="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col shadow-2xl border border-stone-200 animate-in fade-in zoom-in-95 duration-150">
-            <div className="bg-gradient-to-r from-[#8c4e24] to-[#5a2a0c] p-5 text-white flex items-start justify-between">
-              <div>
-                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-white/20 text-amber-200 uppercase tracking-wide">
+      <ModalDialog
+        open={Boolean(selectedAnnouncement)}
+        onClose={() => setSelectedAnnouncement(null)}
+        labelledBy="announcement-modal-title"
+        maxWidthClass="max-w-lg"
+      >
+        {selectedAnnouncement && (
+          <>
+            <div className="bg-[#4A3200] p-5 text-white flex items-start justify-between shrink-0">
+              <div className="pr-4">
+                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#332200] border border-[#C8962E]/40 text-[#FCE4A6] uppercase tracking-wide">
                   {selectedAnnouncement.category}
                 </span>
-                <h3 className="text-base sm:text-lg font-bold mt-2 text-white leading-snug">
+                <h1 id="announcement-modal-title" className="text-base sm:text-lg font-extrabold mt-2 text-white leading-snug">
                   {selectedAnnouncement.title}
-                </h3>
-                <p className="text-xs text-amber-200/80 mt-1">
+                </h1>
+                <p className="text-xs text-[#FCE4A6]/85 mt-1">
                   {selectedAnnouncement.date} • Diposting oleh: {selectedAnnouncement.author}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedAnnouncement(null)}
-                className="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 text-base font-bold"
+                aria-label="Tutup Detail Pengumuman"
+                className="btn-3d-cream w-9 h-9 rounded-xl flex items-center justify-center text-[#4A3200] shrink-0"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
-            <div className="p-6 overflow-y-auto space-y-4 flex-1 text-stone-700 text-xs sm:text-sm leading-relaxed whitespace-pre-line">
+            <div className="p-6 overflow-y-auto space-y-4 flex-1 bg-[#FAF7F2] text-[#241904] text-xs sm:text-sm leading-relaxed whitespace-pre-line">
               {selectedAnnouncement.content}
             </div>
-            <div className="p-4 bg-stone-50 border-t border-stone-200 flex justify-end">
+            <div className="p-4 bg-white border-t border-[#E5D7BC] flex justify-end shrink-0">
               <button
                 type="button"
                 onClick={() => setSelectedAnnouncement(null)}
-                className="px-4 py-2 rounded-xl bg-stone-800 hover:bg-black text-white text-xs font-semibold transition-colors"
+                className="btn-3d-bronze px-5 py-2 rounded-xl text-xs font-bold"
               >
                 Tutup
               </button>
             </div>
+          </>
+        )}
+      </ModalDialog>
+
+      {/* Modal: Roster Mahasiswa Whitelist */}
+      <ModalDialog
+        open={showRosterModal}
+        onClose={() => setShowRosterModal(false)}
+        labelledBy="roster-modal-title"
+        maxWidthClass="max-w-2xl"
+      >
+        <div className="bg-[#4A3200] p-5 text-white flex items-center justify-between shrink-0">
+          <div>
+            <h1 id="roster-modal-title" className="text-base font-extrabold">
+              Daftar Mahasiswa Resmi HK A 2025
+            </h1>
+            <p className="text-xs text-[#FCE4A6]/90">
+              Total: {students.length} Mahasiswa Terdaftar di Sistem Whitelist
+            </p>
           </div>
+          <button
+            type="button"
+            onClick={() => setShowRosterModal(false)}
+            aria-label="Tutup Daftar Mahasiswa"
+            className="btn-3d-cream w-9 h-9 rounded-xl flex items-center justify-center text-[#4A3200]"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
-      )}
 
-      {/* Modal: 30 Roster Mahasiswa Whitelist */}
-      {showRosterModal && (
-        <div className="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col shadow-2xl border border-stone-200 animate-in fade-in zoom-in-95 duration-150">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-[#8c4e24] to-[#5a2a0c] p-5 text-white flex items-center justify-between">
-              <div>
-                <h3 className="text-base font-bold">Daftar Mahasiswa Resmi HK A 2025</h3>
-                <p className="text-xs text-amber-100/90">
-                  Total: {students.length} Mahasiswa Terdaftar di Sistem Whitelist
-                </p>
-              </div>
-              <button
-                onClick={() => setShowRosterModal(false)}
-                className="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Body */}
-            <div className="p-4 overflow-y-auto flex-1">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="border-b border-stone-200 bg-stone-50 text-stone-600 font-semibold">
-                    <th className="py-2.5 px-3 text-center w-12">No</th>
-                    <th className="py-2.5 px-3">NIM</th>
-                    <th className="py-2.5 px-3">Nama Lengkap</th>
-                    <th className="py-2.5 px-3 text-center">L/P</th>
-                    <th className="py-2.5 px-3 text-center">Status PIN</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-stone-100">
-                  {[...students]
-                    .sort((a, b) => a.nim.trim().localeCompare(b.nim.trim(), undefined, { numeric: true }))
-                    .map((st, idx) => {
-                      const cleanNim = (st.nim || '').trim();
-                      const maskedNim = cleanNim.length > 4 ? cleanNim.slice(0, -4) + 'xxxx' : 'xxxx';
-                      return (
-                        <tr key={st.nim} className="hover:bg-amber-50/50">
-                          <td className="py-2 px-3 text-center text-stone-400">{idx + 1}</td>
-                          <td className="py-2 px-3 font-mono font-semibold text-[#9d5f2f]">{maskedNim}</td>
-                          <td className="py-2 px-3 font-medium text-stone-800">{st.name}</td>
-                          <td className="py-2 px-3 text-center text-stone-500">{st.gender}</td>
-                          <td className="py-2 px-3 text-center">
-                            {st.isPinSet ? (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                                Aktif
-                              </span>
-                            ) : (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-stone-100 text-stone-500">
-                                Belum Set PIN
-                              </span>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Footer */}
-            <div className="p-4 bg-stone-50 border-t border-stone-200 flex items-center justify-between">
-              <p className="text-[11px] text-stone-500">
-                Demi privasi identitas, 4 digit terakhir NIM disensor. Hanya mahasiswa pada daftar ini yang dapat login.
-              </p>
-              <button
-                onClick={() => setShowRosterModal(false)}
-                className="px-4 py-2 rounded-xl bg-stone-800 hover:bg-black text-white text-xs font-semibold transition-colors"
-              >
-                Tutup
-              </button>
-            </div>
-          </div>
+        <div className="p-4 overflow-y-auto flex-1 bg-white">
+          <table className="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr className="border-b border-[#E5D7BC] bg-[#FAF7F2] text-[#4A3200] font-bold">
+                <th className="py-2.5 px-3 text-center w-12">No</th>
+                <th className="py-2.5 px-3">NIM</th>
+                <th className="py-2.5 px-3">Nama Lengkap</th>
+                <th className="py-2.5 px-3 text-center">L/P</th>
+                <th className="py-2.5 px-3 text-center">Status PIN</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#F1E8D6]">
+              {[...students]
+                .sort((a, b) => a.nim.trim().localeCompare(b.nim.trim(), undefined, { numeric: true }))
+                .map((st, idx) => {
+                  const cleanNim = (st.nim || '').trim();
+                  const maskedNim = cleanNim.length > 4 ? cleanNim.slice(0, -4) + 'xxxx' : 'xxxx';
+                  return (
+                    <tr key={st.nim} className="hover:bg-[#FAF7F2]">
+                      <td className="py-2 px-3 text-center text-[#8C7549]">{idx + 1}</td>
+                      <td className="py-2 px-3 font-mono font-bold text-[#4A3200]">{maskedNim}</td>
+                      <td className="py-2 px-3 font-medium text-[#241904]">{st.name}</td>
+                      <td className="py-2 px-3 text-center text-[#6B5730]">{st.gender}</td>
+                      <td className="py-2 px-3 text-center">
+                        {st.isPinSet ? (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                            Aktif
+                          </span>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#F6EFE0] text-[#6B5730]">
+                            Belum Set PIN
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
         </div>
-      )}
+
+        <div className="p-4 bg-[#FAF7F2] border-t border-[#E5D7BC] flex flex-col sm:flex-row sm:items-center justify-between gap-2 shrink-0">
+          <p className="text-[11px] text-[#6B5730]">
+            Demi privasi identitas, 4 digit terakhir NIM disensor. Hanya mahasiswa pada daftar ini yang dapat login.
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowRosterModal(false)}
+            className="btn-3d-bronze px-5 py-2 rounded-xl text-xs font-bold shrink-0"
+          >
+            Tutup
+          </button>
+        </div>
+      </ModalDialog>
 
       {/* Floating Toast Notification */}
       {toastMsg && (
-        <div className="fixed bottom-6 right-6 z-50 bg-stone-900 text-white px-4 py-3 rounded-2xl shadow-2xl border border-amber-500/40 flex items-center space-x-2 text-xs font-semibold animate-in fade-in slide-in-from-bottom-5">
+        <div role="status" aria-live="polite" className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50 bg-[#4A3200] text-white px-4 py-3 rounded-2xl shadow-2xl border border-[#C8962E]/50 flex items-center space-x-2 text-xs font-semibold animate-in fade-in slide-in-from-bottom-5">
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>{toastMsg}</span>
         </div>
@@ -1021,8 +1052,8 @@ export default function HomePage() {
 
       {/* Mobile Double-Back to Exit Toast */}
       {showExitToast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-stone-900/95 backdrop-blur-md text-white px-5 py-2.5 rounded-full shadow-2xl border border-white/15 flex items-center space-x-2 text-xs font-semibold animate-in fade-in slide-in-from-bottom-4 pointer-events-none">
-          <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+        <div role="status" aria-live="polite" className="fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#241800]/95 backdrop-blur-md text-white px-5 py-2.5 rounded-full shadow-2xl border border-[#C8962E]/40 flex items-center space-x-2 text-xs font-semibold animate-in fade-in slide-in-from-bottom-4 pointer-events-none">
+          <span className="w-2 h-2 rounded-full bg-[#FCE4A6] animate-pulse" />
           <span>Tekan sekali lagi untuk keluar</span>
         </div>
       )}
